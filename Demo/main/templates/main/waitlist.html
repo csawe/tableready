@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Waitlist
+{% endblock title %}
+
+
+{% block content %}
+    <div class='list-group'>
+        <table class='table table-hover'>
+            <tr>
+                <td>Check in</td>
+                <td>Wait</td>
+                <td>Name</td>
+                <td>Phone</td>
+                <td>Size</td>
+            </tr>
+            {% for obj in object %}
+                <tr>
+                    <td>{{obj.checkin | time}}</td>
+                    <td>{{obj.estimated_wait_time_given}}</td>
+                    <td>{{obj.party_name}}</td>
+                    <td>{{obj.phone}}</td>
+                    <td>{{obj.size}}</td>
+                    <td>
+                        <form action='' method="POST" id='messageform'>
+                            {% csrf_token %}
+                            <button class="btn btn-success" name='message-id' type='submit' value='{{obj.id}}' form='messageform'>Message</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action='' method="POST" id='messageform'>
+                            {% csrf_token %}
+                            <button class="btn btn-success" name='message-id2' type='submit' value='{{obj.id}}' form='messageform'>Send Final Message</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action='' method="POST">
+                            {% csrf_token %}
+                            <button class="btn btn-fail" name='seated-id' type='submit' value='{{obj.id}}'>Seated</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action='' method="POST">
+                            {% csrf_token %}
+                            <button class="btn btn-fail" name='cancel-id' type='submit' value='{{obj.id}}'>Cancel</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action='' method="POST">
+                            {% csrf_token %}
+                            <button class="btn btn-fail" name='update-id' type='submit' value='{{obj.id}}'>Edit</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <a href='../waitlist_create'><button class="btn btn-success">Add New Reservation</button></a>
+        </div>
+    </div>
+
+{% endblock content %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Messages
+{% endblock title %}
+
+
+{% block content %}
+    <div>
+        <p>
+            
+            <form method="POST">
+                {% csrf_token %}
+                <p>
+                    <h3>Enter message sent when table is ready</h3>
+                    <h4>Message Body:</h4>
+                    <textarea rows="3" cols="100" name="one_text">
+                        {{one.message_text}}
+                    </textarea>
+                </p>
+                <p>
+                    <h3>Enter message sent when customer doesn't respond.</h3>
+                    <h4>Message Body:</h4>
+                    <textarea rows="3" cols="100" name="two_text">
+                        {{two.message_text}}
+                    </textarea>
+                </p>
+                <br>
+                <p>
+                    <h3>Choose a timezone</h3>
+                    <select name="timezone">
+                        {% for tz in timezones %}
+                            {% if tz == timez %}
+                                <option value={{tz}} selected>{{tz}}</option>
+                            {% else %}
+                                <option value={{tz}}>{{tz}}</option>
+                            {% endif %} 
+                        {% endfor %}
+                    </select>           
+                </p>
+                <button class="btn btn-success" name='id' type='submit'>Save</button>
+            </form>
+        </p>
+    </div>
+
+{% endblock content %}

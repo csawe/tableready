@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <style type="text/css">
+      /* The sidebar menu */
+      .sidenav {
+        height: 100%; /* Full-height: remove this if you want "auto" height */
+        width: 160px; /* Set the width of the sidebar */
+        position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+        z-index: 1; /* Stay on top */
+        top: 0; /* Stay at the top */
+        left: 0;
+        background-color: #111; /* Black */
+        overflow-x: hidden; /* Disable horizontal scroll */
+        padding-top: 20px;
+      }
+
+      /* The navigation menu links */
+      .sidenav a {
+        padding: 6px 8px 6px 16px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+      }
+
+      /* When you mouse over the navigation links, change their color */
+      .sidenav a:hover {
+        color: #f1f1f1;
+      }
+
+      /* Style page content */
+      .main {
+        margin-left: 160px; /* Same as the width of the sidebar */
+        padding: 0px 10px;
+      }
+
+      /* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+      @media screen and (max-height: 450px) {
+        .sidenav {padding-top: 15px;}
+        .sidenav a {font-size: 18px;}
+      }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <title>{% block title %}Reservation Site{% endblock %}</title>
+</head>
+
+<body>
+
+  <!-- Side navigation -->
+
+    <div class="sidenav">
+        <div>
+          {% if user.is_authenticated %}
+            <p>Welcome {{user.username}}</p>
+            <a href='../../User/logout'>Logout</a>
+            <a href="/waitlist">Wait List</a>
+        <a href="/settings">Settings</a>
+        <a href="/">Reports</a>
+          {% endif %}
+        </div>
+    </div>
+  <!-- Page content -->
+  <div class="main">
+    <div class="row justify-content-center">
+      <div class="col-8">
+
+        {% if messages %}
+        {% for message in messages %}
+            <div class="alert {{ message.tags }} alert-dismissible shadow fade show" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{ message | safe }}
+            </div>
+        {% endfor %}
+      {% endif %}
+
+        <h4 class="mt-2">Welcome to Table Ready Texting by Lily Miller & Media By Miller</h4>
+        <hr class="mt-0 mb-4">
+        {% block content %}
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+
+  </div>
+</body>
+</html>
