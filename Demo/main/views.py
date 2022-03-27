@@ -5,7 +5,7 @@ from django.conf import settings
 from django.views.generic import UpdateView
 
 from .models import Waitlist, Message
-from .forms import WaitlistModelForm, MessageModelForm
+from .forms import WaitlistModelForm
 
 from twilio.rest import Client
 from datetime import datetime
@@ -14,9 +14,9 @@ import pytz
 # Create your views here.
 def send_message(num, text, request):
     # Your Account SID from twilio.com/console
-    account_sid = settings.TWILIO_ACCOUNT_SID
+    account_sid = str(settings.TWILIO_ACCOUNT_SID)
     # Your Auth Token from twilio.com/console
-    auth_token = settings.TWILIO_AUTH_TOKEN
+    auth_token = str(settings.TWILIO_AUTH_TOKEN)
     acc_num = settings.TWILIO_NUMBER
     client = Client(account_sid, auth_token)
     try:
@@ -28,7 +28,7 @@ def send_message(num, text, request):
         messages.success(request, 'Message sent')
         print(message.sid)
         return True
-    except Exception as e:
+    except Exception:
         try:
             validation_request = client.validation_requests.create(
                 friendly_name='A new Customer',
@@ -45,23 +45,38 @@ def send_message(num, text, request):
             return True
         except Exception as ex:
             if HTTPError:
-                messages.error(request, "Cannot send text at this moment. Kindly wait...")
+                messages.error(request, f"Cannot send text at this moment. Kindly wait...{ex}")
                 print("Chhange twilio sid and auth or the numb")
             else:
                 messages.error(request, 'An error occured')
                 print(ex)
             return redirect('../')
-        
+
 timezones = []
 for tz in pytz.all_timezones:
     timezones.append(tz)
+
+def time_to_utc(naive, timezone):
+    local = pytz.timezone(timezone)
+    local_dt = local.localize(naive, is_dst=None)
+    utc_dt = local_dt.astimezone(pytz.utc)
+    return utc_dt
+
+def utc_to_time(naive, timezone):
+    return naive.replace(tzinfo=pytz.utc).astimezone(pytz.timezone(timezone))
 
 def waitlist_create(request):
     form = WaitlistModelForm(request.POST or None)
     if form.is_valid():
         obj = form.save(commit=False)
         obj.user = request.user
-        obj.checkin = datetime.now(pytz.timezone(request.user.tz))
+        #dt = tz.localize(datetime.now())
+        #tz = pytz.timezone(request.user.tz)
+        UTC = pytz.utc
+        dt = datetime.now(UTC)
+        dt =  dt.replace(hour = dt.hour-4)
+        obj.checkin = dt
+        #obj.checkin = dt
         obj.save()
         #Toast a message=, include JS
         waitlist = form.cleaned_data.get('party_name')
@@ -70,7 +85,7 @@ def waitlist_create(request):
         return redirect('../waitlist')
     else:
         for msg in form.errors:
-            messages.error(request, f'{msg}: {form.errors[msg]}')  
+            messages.error(request, f'{msg}: {form.errors[msg]}')
     context={
         'form' : form,
     }
@@ -88,26 +103,23 @@ def waitlist_view(request):
             obj = Waitlist.objects.get(id=id_num)
             if obj.state == False:
                 num = str(obj.phone)
-                name = str(obj.party_name)
                 txt = Message.objects.filter(user=request.user).get(message_number=1)
                 print(txt.message_number)
                 body = txt.message_text
-                body = "Hello "+name+", "+body
                 state = send_message(num, body,request)
-                obj.state = True
-                obj.save()
-                obj.time_message_sent = datetime.now()
+                if state == True:
+                    obj.state = True
+                    obj.save()
+                    obj.time_message_sent = datetime.now()
             else:
                 messages.error(request,'First message has already been sent')
         elif id_num2:
             obj = Waitlist.objects.get(id=id_num2)
             if obj.state==True:
                 num = str(obj.phone)
-                name = str(obj.party_name)
                 txt = Message.objects.filter(user=request.user).get(message_number=2)
                 print(txt.message_number)
                 body = txt.message_text
-                body = "Hello "+name+", "+body
                 send_message(num, body, request)
                 obj.time_message_sent = datetime.now()
                 messages.success(request, "Message successfully")
@@ -157,7 +169,7 @@ def message_view(request):
         timez = request.user.tz
     else:
         timez = "US/Central"
-    
+
 
     if request.method =='POST':
         one_text = request.POST.get('one_text')
@@ -172,7 +184,7 @@ def message_view(request):
         request.user.tz = tz
         request.user.save()
         return redirect("/settings")
-        
+
     context = {
         'one': one,
         'two': two,

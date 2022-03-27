@@ -10,7 +10,7 @@ class CustomAccountManager(BaseUserManager):
         user.set_password(password)
         user.save()
         return user
-        
+
     def create_superuser(self, email, username, first_name, password, **other_fields):
         #other_fields.setdefault('is_staff', True)
         other_fields.setdefault('is_superuser', True)
@@ -23,14 +23,14 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=20, unique=True)
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
-    tz = models.CharField(max_length=200)
+    tz = models.CharField(max_length=200, default="US/Central")
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
     start_date = models.DateTimeField(default=timezone.now)
-    
+
     objects = CustomAccountManager()
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email','first_name']
-    
+
     def __str__(self):
         return self.username

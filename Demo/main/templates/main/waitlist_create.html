@@ -4,11 +4,35 @@
 Create new Waitlist
 {% endblock title %}
 
+{% load crispy_forms_tags %}
 {% block content %}
 
-    <form method='POST'>
+    <form method='POST' >
         {% csrf_token %}
-        {{ form.as_p }} 
+        <h3>Create a new Reservation</h3>
+        <table>
+            <tr>
+                <td style="text-align: center;">Estimated Wait Time</td>
+                <td>{{form.estimated_wait_time_given }}</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">Name</td>
+                <td>{{form.party_name}}</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">Size</td>
+                <td>{{form.size}}</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">Phone</td>
+                <td>{{form.phone}}</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">Note</td>
+                <td>{{form.note}}</td>
+            </tr>
+        </table>
+        <br>
         <input type='submit' value='Save'>
         <a href='../waitlist'><button type='button' value='save'>Cancel</button></a>
     </form>

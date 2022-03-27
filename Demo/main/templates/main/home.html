@@ -8,13 +8,13 @@ Home
 
 {% block content %}
     {% if not user.is_anonymous %}
-    <h1 class="mt-2">Welcome {{user.username}}</h1>    
+    <h1 class="mt-2">Welcome {{user.username}}</h1>
     {% endif %}
 
     {% if user.is_anonymous %}
-        <p><h3>Welcome to Table Ready Texting by Lily Miller & Media By Miller</h3></p>
         <p>Kindly log in</p>
         <a href='/User/login'>Log in</a>
+        Or <a href="/User/signup">Sign up</a>
     {% endif %}
 
 {% endblock content %}

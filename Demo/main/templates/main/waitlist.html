@@ -9,7 +9,7 @@ Waitlist
     <div class='list-group'>
         <table class='table table-hover'>
             <tr>
-                <td>Check in</td>
+                <td width="200">Checked in</td>
                 <td>Wait</td>
                 <td>Name</td>
                 <td>Phone</td>
@@ -17,7 +17,7 @@ Waitlist
             </tr>
             {% for obj in object %}
                 <tr>
-                    <td>{{obj.checkin | time}}</td>
+                    <td>{{obj.checkin | time}}(EST)</td>
                     <td>{{obj.estimated_wait_time_given}}</td>
                     <td>{{obj.party_name}}</td>
                     <td>{{obj.phone}}</td>
@@ -28,10 +28,10 @@ Waitlist
                             <button class="btn btn-success" name='message-id' type='submit' value='{{obj.id}}' form='messageform'>Message</button>
                         </form>
                     </td>
-                    <td>
+                    <td width>
                         <form action='' method="POST" id='messageform'>
                             {% csrf_token %}
-                            <button class="btn btn-success" name='message-id2' type='submit' value='{{obj.id}}' form='messageform'>Send Final Message</button>
+                            <button class="btn btn-success" name='message-id2' type='submit' value='{{obj.id}}' form='messageform'>Send Reminder</button>
                         </form>
                     </td>
                     <td>
