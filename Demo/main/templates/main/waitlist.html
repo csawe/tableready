@@ -14,6 +14,7 @@ Waitlist
                 <td>Name</td>
                 <td>Phone</td>
                 <td>Size</td>
+                <td>Note</td>
             </tr>
             {% for obj in object %}
                 <tr>
@@ -22,6 +23,7 @@ Waitlist
                     <td>{{obj.party_name}}</td>
                     <td>{{obj.phone}}</td>
                     <td>{{obj.size}}</td>
+                    <td>{{obj.note}}</td>
                     <td>
                         <form action='' method="POST" id='messageform'>
                             {% csrf_token %}

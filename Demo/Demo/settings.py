@@ -34,14 +34,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-n_1qd)ra#p==hsn5p3rz*c*_uy$70t2myq%@s=q^op15i_55=('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['csawe1.pythonanywhere.com']
+ALLOWED_HOSTS = ['app.tablereadytext.com']
 
 #Twilio Account Details
 TWILIO_NUMBER = '+15135966820'
-TWILIO_ACCOUNT_SID = 'AC8fdf3bfd0f8982ce2c71c7c46356747d'
-TWILIO_AUTH_TOKEN = 'bb7bc11b4166b71c6ebd28efbaa1551b'
+TWILIO_ACCOUNT_SID = ''
+TWILIO_AUTH_TOKEN = ''
 
 
 

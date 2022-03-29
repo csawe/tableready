@@ -58,6 +58,10 @@
           {% if user.is_authenticated %}
             <p>Welcome {{user.username}}</p>
             <a href='../../User/logout'>Logout</a>
+            {%if user.is_staff %}
+                <a href='../../'>Home</a>
+                <a href='../../User/update/{{user.id}}'>Account</a>
+            {% endif %}
             <a href="/waitlist">Wait List</a>
         <a href="/settings">Settings</a>
         <a href="/">Reports</a>

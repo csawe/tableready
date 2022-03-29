@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Update Login details
+{% endblock title %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    
+    <form method='POST'>
+        <br>
+        <h3>Edit your details</h3>
+        <br><br>
+        {% csrf_token %}
+        {{ form|crispy }} 
+        <input type='submit' value='Save' class='btn btn-primary'>
+        <a href='../../'><button type='button' value='save'class='btn btn-primary'>Cancel</button></a>
+    </form>
+
+{% endblock content %}

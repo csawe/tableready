@@ -9,12 +9,14 @@ Home
 {% block content %}
     {% if not user.is_anonymous %}
     <h1 class="mt-2">Welcome {{user.username}}</h1>
+        {%if  user.is_staff %}
+            <a href="/User/signup">Sign up a new user</a>
+        {%endif%}
     {% endif %}
 
     {% if user.is_anonymous %}
         <p>Kindly log in</p>
         <a href='/User/login'>Log in</a>
-        Or <a href="/User/signup">Sign up</a>
     {% endif %}
 
 {% endblock content %}

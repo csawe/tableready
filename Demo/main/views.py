@@ -8,7 +8,8 @@ from .models import Waitlist, Message
 from .forms import WaitlistModelForm
 
 from twilio.rest import Client
-from datetime import datetime
+
+import datetime
 import pytz
 
 # Create your views here.
@@ -45,7 +46,7 @@ def send_message(num, text, request):
             return True
         except Exception as ex:
             if HTTPError:
-                messages.error(request, f"Cannot send text at this moment. Kindly wait...{ex}")
+                messages.error(request, "Cannot send text at this moment.")
                 print("Chhange twilio sid and auth or the numb")
             else:
                 messages.error(request, 'An error occured')
@@ -70,15 +71,11 @@ def waitlist_create(request):
     if form.is_valid():
         obj = form.save(commit=False)
         obj.user = request.user
-        #dt = tz.localize(datetime.now())
-        #tz = pytz.timezone(request.user.tz)
         UTC = pytz.utc
-        dt = datetime.now(UTC)
-        dt =  dt.replace(hour = dt.hour-4)
-        obj.checkin = dt
-        #obj.checkin = dt
+        dt = datetime.datetime.now(UTC)
+        now = dt + datetime.timedelta(hours=-4)
+        obj.checkin = now
         obj.save()
-        #Toast a message=, include JS
         waitlist = form.cleaned_data.get('party_name')
         form = WaitlistModelForm()
         messages.success(request, f"New reservation created for {waitlist}")
